@@ -1,3 +1,45 @@
-<p>
-  category-list works!
-</p>
+<nav class="mb-5">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/">Home</a>
+    </li>
+    <li class="breadcrumb-item active">
+      Categories
+    </li>
+  </ol>
+</nav>
+
+<div class="row mb-4">
+  <div class="col-md">
+    <h1 class="h2 border-left pl-2">
+      Categories
+    </h1>
+  </div>
+  <div class="col-md">
+    <a class="btn btn-success float-right" routerLink="new">
+      + New Category
+    </a>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr class="bg-primary text-light">
+      <th>Category</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        <strong>Leisure</strong><br>
+        <small>Theater, park, beach...</small>
+      </td>
+      <td>
+        <a class="btn btn-outline-info btn-sm mr-2" [routerLink]="[12, 'edit']">Edit</a>
+        <button class="btn btn-outline-danger btn-sm" (click)="deleteCategory(category.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
