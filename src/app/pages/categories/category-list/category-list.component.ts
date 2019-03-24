@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Category } from '../shared/category.model';
 import { CategoryService } from '../shared/category.service';
-import {element} from 'protractor';
 
 @Component({
   selector: 'app-category-list',
