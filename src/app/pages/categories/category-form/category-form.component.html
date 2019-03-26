@@ -7,7 +7,7 @@
       <a routerLink="/categories">Categories</a>
     </li>
     <li class="breadcrumb-item active">
-      Category Form
+      {{pageTitle}}
     </li>
   </ol>
 </nav>
@@ -15,7 +15,7 @@
 <div class="row mb-4">
   <div class="col-md">
     <h1 class="h2 border-left pl-2">
-      Category Form
+      {{pageTitle}}
     </h1>
   </div>
   <div class="col-md">
@@ -25,7 +25,7 @@
   </div>
 </div>
 
-<form [formGroup]="categoryForm">
+<form [formGroup]="categoryForm" (submit)="submitForm()">
   <div class="card">
     <div class="card-header">
       Category info
@@ -35,16 +35,24 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="name">Name</label>
-          <input type="text" class="form-control" id="name">
+          <input type="text" class="form-control" id="name" formControlName="name">
+
+          <div class="text-danger" *ngIf="categoryForm.get('name').invalid && categoryForm.get('name').touched">
+            <div *ngIf="categoryForm.get('name').errors.required">Must not be empty</div>
+            <div *ngIf="categoryForm.get('name').errors.minLength">Must have at least 2 characters</div>
+          </div>
         </div>
 
         <div class="form-group col-md-8">
           <label for="description">Description</label>
-          <input type="text" class="form-control" id="description">
+          <input type="text" class="form-control" id="description" formControlName="description">
         </div>
       </div>
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary btn-lg float-right mt-3">Save</button>
+  <button type="submit" class="btn btn-primary btn-lg float-right mt-3"
+      [disabled]="submittingForm || categoryForm.invalid">
+    Save
+  </button>
 </form>

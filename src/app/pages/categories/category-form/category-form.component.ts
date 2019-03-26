@@ -40,6 +40,19 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
     this.setPageTitle();
   }
 
+  /**
+   * Form submission event
+   */
+  submitForm() {
+    this.submittingForm = true;
+
+    if (this.currentAction == 'new') {
+      this.createCategory();
+    } else {
+      this.updateCategory();
+    }
+  }
+
   // PRIVATE METHODS
 
   /**
@@ -90,6 +103,61 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
     } else {
       const categoryName = this.category.name || '';
       this.pageTitle = `Editing Category: ${categoryName}`;
+    }
+  }
+
+  /**
+   * Creates category with form data
+   */
+  private createCategory() {
+    const category: Category = Object.assign(new Category(), this.categoryForm.value);
+
+    this.categoryService.create(category)
+      .subscribe(
+        category => this.actionsForSuccess(category),
+        error => this.actionsForError(error)
+      )
+  }
+
+  /**
+   * Updates category with form data
+   */
+  private updateCategory() {
+    const category: Category = Object.assign(new Category(), this.categoryForm.value);
+
+    this.categoryService.update(category)
+      .subscribe(
+        category => this.actionsForSuccess(category),
+        error => this.actionsForError(error)
+      )
+  }
+
+  /**
+   * Shows success message and reloads form
+   * @param category Category
+   */
+  private actionsForSuccess(category: Category) {
+    toastr.success('Successfully processed!');
+
+    this.router.navigateByUrl("categories", {skipLocationChange: true}).then(
+      () => this.router.navigate(['categories', category.id, 'edit'])
+    )
+  }
+
+  /**
+   * Shoes error message
+   * @param error Error
+   */
+  private actionsForError(error) {
+    toastr.error('An error occurred!');
+    console.error(error);
+
+    this.submittingForm = false;
+
+    if (error.status === 422) {
+      this.serverErrorMessages = JSON.parse(error._body).errors;
+    } else {
+      this.serverErrorMessages = ['Server error'];
     }
   }
 }
