@@ -32,9 +32,23 @@
     </div>
 
     <div class="card-body">
+
       <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="name">Name</label>
+        <!--TYPE-->
+        <div class="form-group col-md-2">
+          <label for="type">Type</label>
+          <select class="form-control" name="type" id="type" formControlName="type">
+            <option *ngFor="let option of typeOptions" [value]="option.value">{{option.text}}</option>
+          </select>
+
+          <div class="text-danger" *ngIf="entryForm.get('type').invalid && entryForm.get('type').touched">
+            <div *ngIf="entryForm.get('type').errors.required">Must not be empty</div>
+          </div>
+        </div>
+
+        <!--NAME-->
+        <div class="form-group col-md-5">
+          <label for="name">Entry</label>
           <input type="text" class="form-control" id="name" formControlName="name">
 
           <div class="text-danger" *ngIf="entryForm.get('name').invalid && entryForm.get('name').touched">
@@ -43,7 +57,69 @@
           </div>
         </div>
 
-        <div class="form-group col-md-8">
+        <!--AMOUNT-->
+        <div class="form-group col-md-3">
+          <label for="amount">Amount</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">$</div>
+            </div>
+            <input type="text" class="form-control text-right" id="amount" [imask]="imaskConfig"
+                   formControlName="amount">
+          </div>
+
+          <div class="text-danger" *ngIf="entryForm.get('amount').invalid && entryForm.get('amount').touched">
+            <div *ngIf="entryForm.get('amount').errors.required">Must not be empty</div>
+          </div>
+        </div>
+
+        <!--DATE-->
+        <div class="form-group col-md-2">
+          <label for="date">Date</label>
+          <p-calendar id="date" formControlName="date" inputStyleClass="form-control"
+                      dataType="string" dateFormat="dd/mm/yy" [showButtonBar]="true">
+          </p-calendar>
+
+          <div class="text-danger" *ngIf="entryForm.get('date').invalid && entryForm.get('date').touched">
+            <div *ngIf="entryForm.get('date').errors.required">Must not be empty</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!--PAID-->
+        <div class="form-group col-md-2">
+          <label for="paid">Paid</label>
+          <div id="paid" class="btn-group">
+            <label [class.active]="entryForm.get('paid').value === true" class="btn btn-outline-info"
+                   (click)="entryForm.get('paid').setValue(true)">
+              Paid
+            </label>
+            <label [class.active]="entryForm.get('paid').value === false" class="btn btn-outline-info"
+                   (click)="entryForm.get('paid').setValue(false)">
+              Pending
+            </label>
+          </div>
+
+          <div class="text-danger" *ngIf="entryForm.get('paid').invalid && entryForm.get('paid').touched">
+            <div *ngIf="entryForm.get('paid').errors.required">Must not be empty</div>
+          </div>
+        </div>
+
+        <!--CATEGORY ID-->
+        <div class="form-group col-md-3">
+          <label for="categoryId">Category</label>
+          <select class="form-control" name="categoryId" id="categoryId" formControlName="categoryId">
+            <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+          </select>
+
+          <div class="text-danger" *ngIf="entryForm.get('categoryId').invalid && entryForm.get('categoryId').touched">
+            <div *ngIf="entryForm.get('categoryId').errors.required">Must not be empty</div>
+          </div>
+        </div>
+
+        <!--DESCRIPTION-->
+        <div class="form-group col-md-7">
           <label for="description">Description</label>
           <input type="text" class="form-control" id="description" formControlName="description">
         </div>
@@ -59,7 +135,7 @@
   </div>
 
   <button type="submit" class="btn btn-primary btn-lg float-right mt-3"
-      [disabled]="submittingForm || entryForm.invalid">
+          [disabled]="submittingForm || entryForm.invalid">
     Save
   </button>
 </form>
