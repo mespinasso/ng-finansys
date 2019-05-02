@@ -24,7 +24,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    */
   getAll(): Observable<T[]> {
     return this.http.get(this.apiPath).pipe(
-      catchError(this.handleError),
+      catchError(BaseResourceService.handleError),
       map(this.jsonDataToResources)
     )
   }
@@ -37,7 +37,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.get(url).pipe(
-      catchError(this.handleError),
+      catchError(BaseResourceService.handleError),
       map(this.jsonDataToResource)
     )
   }
@@ -48,7 +48,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    */
   create(resource: T): Observable<T> {
     return this.http.post(this.apiPath, resource).pipe(
-      catchError(this.handleError),
+      catchError(BaseResourceService.handleError),
       map(this.jsonDataToResource)
     )
   }
@@ -61,7 +61,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${resource.id}`;
 
     return this.http.put(url, resource).pipe(
-      catchError(this.handleError),
+      catchError(BaseResourceService.handleError),
       map(() => resource)
     )
   }
@@ -74,7 +74,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.delete(url).pipe(
-      catchError(this.handleError),
+      catchError(BaseResourceService.handleError),
       map(() => null)
     )
   }
@@ -104,7 +104,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    * Handles request error
    * @param error Request error
    */
-  protected handleError(error: any): Observable<any> {
+  protected static handleError(error: any): Observable<any> {
     console.error('Request error => ', error);
     return throwError(error);
   }
