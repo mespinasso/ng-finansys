@@ -12,7 +12,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   protected constructor(
     protected apiPath: string,
-    protected injector: Injector) {
+    protected injector: Injector,
+    protected jsonDataToResourceFn: (jsonData) => T) {
 
     this.http = injector.get(HttpClient);
   }
@@ -24,8 +25,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    */
   getAll(): Observable<T[]> {
     return this.http.get(this.apiPath).pipe(
-      catchError(BaseResourceService.handleError),
-      map(this.jsonDataToResources)
+      map(this.jsonDataToResources.bind(this)),
+      catchError(BaseResourceService.handleError)
     )
   }
 
@@ -37,8 +38,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.get(url).pipe(
-      catchError(BaseResourceService.handleError),
-      map(this.jsonDataToResource)
+      map(this.jsonDataToResource.bind(this)),
+      catchError(BaseResourceService.handleError)
     )
   }
 
@@ -48,8 +49,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    */
   create(resource: T): Observable<T> {
     return this.http.post(this.apiPath, resource).pipe(
-      catchError(BaseResourceService.handleError),
-      map(this.jsonDataToResource)
+      map(this.jsonDataToResource.bind(this)),
+      catchError(BaseResourceService.handleError)
     )
   }
 
@@ -61,8 +62,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${resource.id}`;
 
     return this.http.put(url, resource).pipe(
-      catchError(BaseResourceService.handleError),
-      map(() => resource)
+      map(() => resource),
+      catchError(BaseResourceService.handleError)
     )
   }
 
@@ -74,8 +75,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.delete(url).pipe(
-      catchError(BaseResourceService.handleError),
-      map(() => null)
+      map(() => null),
+      catchError(BaseResourceService.handleError)
     )
   }
   
@@ -87,7 +88,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    */
   protected jsonDataToResources(jsonData: any[]): T[] {
     const resources: T[] = [];
-    jsonData.forEach(element => resources.push(element as T));
+    jsonData.forEach(element => resources.push(this.jsonDataToResourceFn(element)));
 
     return resources;
   }
@@ -97,7 +98,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
    * @param jsonData Json data
    */
   protected jsonDataToResource(jsonData: any): T {
-    return jsonData as T;
+    return this.jsonDataToResourceFn(jsonData);
   }
 
   /**
