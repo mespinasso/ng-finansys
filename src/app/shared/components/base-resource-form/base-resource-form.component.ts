@@ -107,7 +107,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
    * Edition page title
    */
   protected editionPageTitle() : string {
-    return 'New';
+    return 'Editing';
   }
 
   /**
