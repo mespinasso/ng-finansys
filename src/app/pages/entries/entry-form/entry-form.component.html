@@ -25,9 +25,9 @@
             <option *ngFor="let option of typeOptions" [value]="option.value">{{option.text}}</option>
           </select>
 
-          <div class="text-danger" *ngIf="resourceForm.get('type').invalid && resourceForm.get('type').touched">
-            <div *ngIf="resourceForm.get('type').errors.required">Must not be empty</div>
-          </div>
+          <app-form-field-error
+              [form-control]="resourceForm.get('type')">
+          </app-form-field-error>
         </div>
 
         <!--NAME-->
@@ -35,10 +35,9 @@
           <label for="name">Entry</label>
           <input type="text" class="form-control" id="name" formControlName="name">
 
-          <div class="text-danger" *ngIf="resourceForm.get('name').invalid && resourceForm.get('name').touched">
-            <div *ngIf="resourceForm.get('name').errors.required">Must not be empty</div>
-            <div *ngIf="resourceForm.get('name').errors.minLength">Must have at least 2 characters</div>
-          </div>
+          <app-form-field-error
+              [form-control]="resourceForm.get('name')">
+          </app-form-field-error>
         </div>
 
         <!--AMOUNT-->
@@ -52,9 +51,9 @@
                    formControlName="amount">
           </div>
 
-          <div class="text-danger" *ngIf="resourceForm.get('amount').invalid && resourceForm.get('amount').touched">
-            <div *ngIf="resourceForm.get('amount').errors.required">Must not be empty</div>
-          </div>
+          <app-form-field-error
+              [form-control]="resourceForm.get('amount')">
+          </app-form-field-error>
         </div>
 
         <!--DATE-->
@@ -64,9 +63,9 @@
                       dataType="string" dateFormat="dd/mm/yy" [showButtonBar]="true">
           </p-calendar>
 
-          <div class="text-danger" *ngIf="resourceForm.get('date').invalid && resourceForm.get('date').touched">
-            <div *ngIf="resourceForm.get('date').errors.required">Must not be empty</div>
-          </div>
+          <app-form-field-error
+              [form-control]="resourceForm.get('date')">
+          </app-form-field-error>
         </div>
       </div>
 
@@ -85,9 +84,9 @@
             </label>
           </div>
 
-          <div class="text-danger" *ngIf="resourceForm.get('paid').invalid && resourceForm.get('paid').touched">
-            <div *ngIf="resourceForm.get('paid').errors.required">Must not be empty</div>
-          </div>
+          <app-form-field-error
+              [form-control]="resourceForm.get('paid')">
+          </app-form-field-error>
         </div>
 
         <!--CATEGORY ID-->
@@ -97,9 +96,9 @@
             <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
           </select>
 
-          <div class="text-danger" *ngIf="resourceForm.get('categoryId').invalid && resourceForm.get('categoryId').touched">
-            <div *ngIf="resourceForm.get('categoryId').errors.required">Must not be empty</div>
-          </div>
+          <app-form-field-error
+              [form-control]="resourceForm.get('categoryId')">
+          </app-form-field-error>
         </div>
 
         <!--DESCRIPTION-->
